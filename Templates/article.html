@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} · Pensamento Livre{% endblock %}
+
+{% block content %}
+  <a class="voltar" href="{{ url_for('index') }}">&larr; voltar ao início</a>
+
+  <article>
+    <div class="artigo-header">
+      {% if post.tag %}<span class="eyebrow">{{ post.tag }}</span>{% endif %}
+      <h1>{{ post.title }}</h1>
+      <div class="meta">{{ post.created_at | data_br }}{% if not post.published %} &middot; rascunho (não publicado){% endif %}</div>
+    </div>
+
+    {% if post.cover_image_url %}
+      <img src="{{ post.cover_image_url }}" alt="" style="width:100%; margin-bottom:28px;">
+    {% endif %}
+
+    <div class="artigo-body">
+      {{ post.content | markdown | safe }}
+    </div>
+  </article>
+{% endblock %}

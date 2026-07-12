@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Novo artigo · Pensamento Livre{% endblock %}
+
+{% block content %}
+  <div class="form-card">
+    <h1>Novo pensamento</h1>
+    <form method="post" enctype="multipart/form-data">
+      <label for="titulo">Título</label>
+      <input type="text" id="titulo" name="titulo" value="{{ form.titulo or '' }}" required>
+
+      <label for="resumo">Resumo (aparece na listagem)</label>
+      <input type="text" id="resumo" name="resumo" value="{{ form.resumo or '' }}">
+
+      <label for="tag">Categoria / tag (opcional)</label>
+      <input type="text" id="tag" name="tag" value="{{ form.tag or '' }}" placeholder="ex: tecnologia, faculdade, vida">
+
+      <label for="capa_arquivo">Imagem de capa (opcional)</label>
+      <input type="file" id="capa_arquivo" name="capa_arquivo" accept="image/png,image/jpeg,image/gif,image/webp">
+      <div class="hint">ou, se preferir, cole uma URL de imagem já hospedada em outro lugar:</div>
+      <input type="text" id="capa_url" name="capa_url" value="{{ form.capa_url or '' }}" placeholder="https://..." style="margin-top:6px;">
+
+      <label for="conteudo">Conteúdo</label>
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+        <button type="button" id="btn-inserir-imagem" class="btn" style="margin-top:0; padding:8px 16px;">+ inserir imagem no texto</button>
+        <span id="upload-status" class="hint" style="margin-top:0;"></span>
+      </div>
+      <input type="file" id="input-imagem-inline" accept="image/png,image/jpeg,image/gif,image/webp" style="display:none;">
+      <textarea id="conteudo" name="conteudo" required placeholder="Escreva em Markdown: **negrito**, *itálico*, # títulos, listas, etc.">{{ form.conteudo or '' }}</textarea>
+      <div class="hint">suporta Markdown: ** negrito **, # títulos, listas com -, &gt; citação, etc. Use o botão acima pra subir uma imagem e inserir no ponto do texto onde o cursor estiver.</div>
+
+      <div class="checkbox-row">
+        <input type="checkbox" id="publicado" name="publicado" {% if form.publicado %}checked{% else %}checked{% endif %}>
+        <label for="publicado" style="margin:0; text-transform:none; letter-spacing:0;">publicar agora (desmarque para salvar como rascunho)</label>
+      </div>
+
+      <button class="btn" type="submit">Publicar</button>
+    </form>
+  </div>
+  <script src="{{ url_for('static', filename='js/editor.js') }}"></script>
+{% endblock %}

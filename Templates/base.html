@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Pensamento Livre{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='img/logo.jpg') }}">
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-photo">
+        <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Nicolas Felipe">
+      </div>
+      <div>
+        <div class="masthead-title">Pensamento
+          <span class="squiggle">
+            <svg viewBox="0 0 220 14" preserveAspectRatio="none"><path d="M0 7 Q 9 0, 18 7 T 36 7 T 54 7 T 72 7 T 90 7 T 108 7 T 126 7 T 144 7 T 162 7 T 180 7 T 198 7 T 216 7" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </span>
+          <span class="livre">LIVRE</span>
+        </div>
+        <div class="masthead-tagline">registro pessoal de ideias &mdash; por Nicolas Felipe</div>
+      </div>
+      <div class="masthead-actions">
+        {% if session.get('admin_ok') %}
+          <a href="{{ url_for('novo_artigo') }}">+ novo artigo</a>
+          <a href="{{ url_for('sair') }}">sair</a>
+        {% else %}
+          <a href="{{ url_for('entrar') }}">área do autor</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+  <div class="issue-bar">edição livre &middot; {{ now_label if now_label else "" }}publicado sempre que der vontade</div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash">
+        {% for categoria, msg in messages %}
+          <div class="flash-msg flash-{{ 'ok' if categoria == 'ok' else 'erro' }}">{{ msg }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>Pensamento Livre &middot; feito por Nicolas Felipe &middot; M13L</footer>
+</body>
+</html>

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Pensamento Livre{% endblock %}
+
+{% block content %}
+
+  {% if destaque %}
+    <a href="{{ url_for('artigo', slug=destaque.slug) }}" style="text-decoration:none; color:inherit;">
+      <div class="destaque">
+        <span class="eyebrow">último pensamento</span>
+        <h1>{{ destaque.title }}</h1>
+        {% if destaque.summary %}<p class="resumo">{{ destaque.summary }}</p>{% endif %}
+        <div class="meta">
+          {% if destaque.tag %}<span class="tag">{{ destaque.tag }}</span>{% endif %}
+          {{ destaque.created_at | data_br }}
+        </div>
+        <span class="ler-mais">ler o artigo completo &rarr;</span>
+      </div>
+    </a>
+  {% endif %}
+
+  <div class="section-label">arquivo</div>
+
+  {% if artigos %}
+    <div class="feed">
+      {% for post in artigos %}
+        <a class="feed-item" href="{{ url_for('artigo', slug=post.slug) }}">
+          <div>
+            <h2>{{ post.title }}</h2>
+            {% if post.summary %}<p class="resumo">{{ post.summary }}</p>{% endif %}
+          </div>
+          <div class="meta">
+            {% if post.tag %}<div class="tag" style="margin-bottom:6px; display:inline-block;">{{ post.tag }}</div><br>{% endif %}
+            {{ post.created_at | data_br }}
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  {% elif not destaque %}
+    <div class="vazio">
+      nenhum artigo publicado ainda.<br>
+      {% if session.get('admin_ok') %}
+        <a class="ler-mais" href="{{ url_for('novo_artigo') }}">escrever o primeiro &rarr;</a>
+      {% else %}
+        volte em breve.
+      {% endif %}
+    </div>
+  {% endif %}
+
+{% endblock %}
